@@ -32,15 +32,20 @@ const App: React.FC = () => {
 
   // Cek session saat mount
   useEffect(() => {
-    const session = localStorage.getItem('yummaris_session');
-    if (session) {
-      const { username, role, identitas } = JSON.parse(session);
-      setIsLoggedIn(true);
-      setIsAdmin(role === 'admin');
-      setIsTeacher(role === 'teacher');
-      setCurrentUser(username);
-      setParticipantId(identitas);
-      setScreen('welcome');
+    try {
+      const session = localStorage.getItem('yummaris_session');
+      if (session) {
+        const { username, role, identitas } = JSON.parse(session);
+        setIsLoggedIn(true);
+        setIsAdmin(role === 'admin');
+        setIsTeacher(role === 'teacher');
+        setCurrentUser(username);
+        setParticipantId(identitas);
+        setScreen('welcome');
+      }
+    } catch (error) {
+      console.error('Session restoration failed:', error);
+      localStorage.removeItem('yummaris_session');
     }
   }, []);
 
